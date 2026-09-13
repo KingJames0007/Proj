@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Nexus - Analytics Dashboard</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #f8fafc;
+            overflow: hidden;
+        }
+
+        /* Fake Dashboard Styles */
+        #dashboard {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: filter 0.5s ease;
+            filter: blur(8px); /* Blurred initially */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #334155;
+            height: 200px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #38bdf8;
+            font-size: 16px;
+        }
+
+        .skeleton-line {
+            height: 12px;
+            background-color: #334155;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .skeleton-line.short {
+            width: 60%;
+        }
+
+        #loading-text {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #38bdf8;
+            z-index: 4;
+        }
+
+        /* Modal Prompt Styles */
+        #prompt-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background-color: rgba(15, 23, 42, 0.7);
+        }
+
+        #prompt-container {
+            text-align: center;
+            background-color: #1e293b;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 400px;
+            border: 1px solid #334155;
+        }
+
+        #prompt-container h1 {
+            color: #f8fafc;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        #prompt-container p {
+            color: #cbd5e1;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        button {
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #0284c7;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Video Container */
+        #video-container {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            background-color: black;
+            opacity: 0; /* Start invisible */
+            transition: opacity 3s ease-in; /* Fade in over 3 seconds */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fake Background Content -->
+    <div id="dashboard">
+        <header>
+            <h2>Project Nexus // Global Analytics Engine</h2>
+            <div>User: Admin_01</div>
+        </header>
+        <div class="grid">
+            <div class="card">
+                <h3>System Architecture</h3>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+            </div>
+            <div class="card">
+                <h3>Real-time Data Stream</h3>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+            </div>
+            <div class="card">
+                <h3>Server Status</h3>
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-text">Decentralizing Mainframe...</div>
+
+    <!-- Volume Prompt Overlay -->
+    <div id="prompt-overlay">
+        <div id="prompt-container">
+            <h1>Audio Required</h1>
+            <p>Project Nexus requires sound notifications for critical alerts. Please turn up your device volume before initializing the dashboard.</p>
+            <button id="continue-btn">I'm Ready</button>
+        </div>
+    </div>
+
+    <!-- Rickroll Container -->
+    <div id="video-container">
+        <!-- Iframe injected here -->
+    </div>
+
+    <script>
+        document.getElementById('continue-btn').addEventListener('click', function() {
+            // 1. Hide the prompt overlay
+            document.getElementById('prompt-overlay').style.display = 'none';
+            
+            // 2. Unblur the fake dashboard to make it look like it's loading
+            document.getElementById('dashboard').style.filter = 'blur(0px)';
+            
+            // 3. Show fake loading text
+            document.getElementById('loading-text').style.display = 'block';
+            
+            // 4. Inject and show the video container (but it starts with opacity: 0)
+            var videoContainer = document.getElementById('video-container');
+            videoContainer.style.display = 'block';
+
+            // Inject the YouTube iframe. It will start playing audio immediately.
+            videoContainer.innerHTML = '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=0&disablekb=1&modestbranding=1&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+            
+            // 5. Trigger the fade-in effect slightly after injection
+            // The audio starts blasting immediately, but the video fades in over 3 seconds,
+            // covering the fake dashboard!
+            setTimeout(function() {
+                videoContainer.style.opacity = '1';
+                document.getElementById('loading-text').style.display = 'none';
+            }, 100);
+        });
+    </script>
+
+</body>
+</html>
