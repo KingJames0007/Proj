@@ -147,13 +147,13 @@
             z-index: 5;
             background-color: black;
             opacity: 0; /* Start invisible */
-            transition: opacity 3s ease-in; /* Fade in over 3 seconds */
+            transition: opacity 2s ease-in; /* Fade in over 2 seconds */
         }
 
-        iframe {
+        video {
             width: 100%;
             height: 100%;
-            border: none;
+            object-fit: cover; /* Cover entire screen seamlessly */
         }
     </style>
 </head>
@@ -196,12 +196,19 @@
         </div>
     </div>
 
-    <!-- Rickroll Container -->
+    <!-- HTML5 Video Container (Ad-Free & Instant Play) -->
     <div id="video-container">
-        <!-- Iframe injected here -->
+        <video id="rickroll-video" playsinline preload="auto">
+            <source src="rickroll.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 
     <script>
+        // Preload video as soon as page loads
+        var video = document.getElementById('rickroll-video');
+        video.load();
+
         document.getElementById('continue-btn').addEventListener('click', function() {
             // 1. Hide the prompt overlay
             document.getElementById('prompt-overlay').style.display = 'none';
@@ -212,16 +219,16 @@
             // 3. Show fake loading text
             document.getElementById('loading-text').style.display = 'block';
             
-            // 4. Inject and show the video container (but it starts with opacity: 0)
+            // 4. Reveal video container and play local MP4 instantly (No Ads, No YouTube UI)
             var videoContainer = document.getElementById('video-container');
             videoContainer.style.display = 'block';
 
-            // Inject the YouTube iframe. It will start playing audio immediately.
-            videoContainer.innerHTML = '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=0&disablekb=1&modestbranding=1&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+            // Play video with audio enabled
+            video.play().catch(function(error) {
+                console.log("Playback failed:", error);
+            });
             
-            // 5. Trigger the fade-in effect slightly after injection
-            // The audio starts blasting immediately, but the video fades in over 3 seconds,
-            // covering the fake dashboard!
+            // 5. Fade in the video over 2 seconds
             setTimeout(function() {
                 videoContainer.style.opacity = '1';
                 document.getElementById('loading-text').style.display = 'none';
